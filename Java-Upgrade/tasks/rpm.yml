@@ -1,0 +1,4 @@
+- name: Upgrade Java JDK
+  yum:
+    name: "java-{{ Java_upgraded_version }}-openjdk"
+    state: latest

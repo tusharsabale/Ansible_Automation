@@ -1,0 +1,9 @@
+# [ ]  Check when run on actual debian
+- name: Update APT cache
+  apt:
+    update_cache: yes
+
+- name: Upgrade Java JDK
+  apt:
+    name: adoptopenjdk-17-hotspot
+    state: latest
