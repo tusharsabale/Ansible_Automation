@@ -1,0 +1,9 @@
+---
+# Task file for java17
+  - name: Install Java 17 on debian
+    include_tasks: debian.yml
+    when: ansible_os_family == "Debian"
+
+  - name: Install Java 17 on rpm
+    include_tasks: rpm.yml
+    when: ansible_os_family == "RedHat"
