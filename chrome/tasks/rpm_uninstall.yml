@@ -1,0 +1,11 @@
+---
+- name: Remove Google Chrome
+  yum:
+    name: google-chrome-stable
+    state: absent
+
+- name: Remove Google Chrome repository
+  yum_repository:
+    name: google-chrome
+    state: absent
+

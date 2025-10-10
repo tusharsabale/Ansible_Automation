@@ -1,0 +1,19 @@
+---
+# tasks file for chrome
+- name: Install Google Chrome on Redhat
+  include_tasks: rpm_install.yml
+  when: ansible_os_family == "RedHat" and chrome_state == "present"
+
+- name: Install Google Chrome on Debian
+  include_tasks: debian_install.yml
+  when: ansible_os_family == "Debian" and chrome_state == "present"
+
+
+- name: Uninstall Google Chrome on Redhat
+  include_tasks: rpm_uninstall.yml
+  when: ansible_os_family == "Redhat" and chrome_state == "absent"
+
+- name: Uninstall Google Chrome on Debian
+  include_tasks: rpm_uninstall.yml
+  when: ansible_os_family == "Debian" and chrome_state == "absent"
+    

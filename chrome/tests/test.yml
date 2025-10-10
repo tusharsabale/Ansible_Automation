@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  remote_user: root
+  vars:
+    chrome_state: present
+  roles:
+    - chrome
