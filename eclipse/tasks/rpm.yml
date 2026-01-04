@@ -1,0 +1,9 @@
+# roles/eclipse/tasks/rpm.yml
+---
+- name: Ensure dependencies are installed (RedHat)
+  yum:
+    name:
+      - wget
+      - tar
+    state: present
+  become: yes

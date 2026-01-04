@@ -1,0 +1,2 @@
+localhost ansible_connection=local eclipse_tar=https://ftp.osuosl.org/pub/eclipse/oomph/epp/2024-12/R/eclipse-inst-jre-linux64.tar.gz
+

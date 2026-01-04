@@ -1,0 +1,47 @@
+---
+# tasks file for eclipse
+- name: Include Debian specific tasks
+  include_tasks: debian.yml
+  when: ansible_os_family == "Debian"
+
+- name: Include RedHat specific tasks
+  include_tasks: rpm.yml
+  when: ansible_os_family == "RedHat"
+
+- name: Download Eclipse tarball
+  get_url:
+    url: "{{ eclipse_tar }}"
+    dest: /tmp/eclipse.tar.gz
+    mode: '0644'
+
+- name: Extract Eclipse to /opt/
+  unarchive:
+    src: /tmp/eclipse.tar.gz
+    dest: /opt/
+    remote_src: yes
+    creates: /opt/eclipse
+  become: yes
+
+- name: Create symlink for Eclipse executable
+  file:
+    src: "/opt/eclipse-installer/eclipse-inst"
+    dest: "/usr/local/bin/eclipse"
+    state: link
+  become: yes
+
+- name: Create Eclipse desktop entry
+  copy:
+    dest: /usr/share/applications/eclipse.desktop
+    mode: '0644'
+    content: |
+      [Desktop Entry]
+      Name=Eclipse IDE
+      Type=Application
+      Exec=/usr/local/bin/eclipse
+      Terminal=false
+      Icon=/opt/eclipse/icon.xpm
+      Comment=Integrated Development Environment
+      Categories=Development;IDE;
+  become: yes
+
+
