@@ -1,0 +1,50 @@
+---
+# tasks file for docker
+- name: Add Docker CE repository
+  yum_repository:
+    name: 
+      - docker-ce-stable
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    description: Docker CE stable Repository
+    baseurl: https://download.docker.com/linux/centos/9/x86_64/stable
+    gpgcheck: 1
+    gpgkey: https://download.docker.com/linux/centos/gpg
+    enabled: 1
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Refresh yum cache
+  command: yum makecache -y
+
+- name: Ensure Docker is installed on RedHat-based systems
+  yum:
+    name: docker
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+    
+- name: Ensure Docker service is atarted and enabled
+  service:
+    name: docker
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Create a Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add user to Docker Group
+  user:
+    name: "{{ansible_user}}"
+    groups: docker
+    append: yes
+
+- name: Apply new Group Membership
+  command: newgrp docker
+  become: yes
+

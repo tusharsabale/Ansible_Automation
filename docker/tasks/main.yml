@@ -1,0 +1,62 @@
+---
+# tasks file for docker
+- name: Remove podman-package if installed
+  yum:
+    name: 
+      - podman
+      - podman-docker
+      - docker
+    state: absent
+  become: yes
+
+- name: Add docker CE repository
+  command: dnf config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+  args:
+    creates: /etc/yum.repos.d/docker-ce.repo
+  become: yes
+
+
+- name: Add Docker CE repository
+  yum_repository:
+    name: 
+      - docker-ce
+      - docker-ce-cli
+      - containered.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    description: Docker CE stable Repository
+    state: present
+    update_cache: yes
+  become: yes
+
+- name: Refresh yum cache
+  command: yum makecache -y
+
+- name: Ensure Docker is installed on RedHat-based systems
+  yum:
+    name: docker
+    state: present
+  become: yes
+    
+- name: Ensure Docker service is atarted and enabled
+  systemd:
+    name: docker
+    enabled: yes
+    state: started
+  become: yes
+
+- name: Create a Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add user to Docker Group
+  user:
+    name: "{{ansible_user}}"
+    groups: docker
+    append: yes
+
+- name: Apply new Group Membership
+  command: newgrp docker
+  become: yes
+
