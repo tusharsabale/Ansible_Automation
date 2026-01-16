@@ -1,0 +1,6 @@
+---
+- name: Install GCC on Debian-based system
+  apt:
+    name: gcc
+    state: present
+    update_cache: yes    

@@ -1,0 +1,5 @@
+---
+- name: Install GCC on RPM-based system
+  package:
+    name: gcc
+    state: present
