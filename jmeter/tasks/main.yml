@@ -1,0 +1,10 @@
+---
+# tasks file for jmetervim
+- name: install the jmeter for the RPM_based system
+  include_tasks: install_rpm.yml
+  when: ansible_os_family == "RedHat"
+
+- name: install the jmeter for the Debian_based system
+  include_tasks: install_debian.yml
+  when: ansible_os_family == "Debian"
+  

@@ -1,0 +1,31 @@
+- name: Ensure necessary tools are installed
+  become: yes
+  package:
+    name:
+      - wget
+      - tar
+    state: present
+
+- name: Download JMeter tar.gz archive
+  become: yes
+  get_url:
+    url: "{{ jmeter_download_url }}"
+    dest: /tmp/apache-jmeter.tgz
+    mode: '0644'
+
+- name: Extract JMeter tar.gz archive
+  become: yes
+  unarchive:
+    src: /tmp/apache-jmeter.tgz
+    dest: /opt/
+    remote_src: yes
+    creates: "{{ jmeter_install_dir }}"
+
+- name: Create symlink for JMeter executable
+  become: yes
+  file:
+    src: "{{ jmeter_install_dir }}/bin/jmeter"
+    dest: "{{ jmeter_symlink_path }}"
+    state: link
+    force: yes
+
