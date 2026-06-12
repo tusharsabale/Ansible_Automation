@@ -1,0 +1,18 @@
+---
+
+- name: Install MySQL server on RedHat
+  dnf:
+    name: mysql-server
+    state: present
+  become: yes
+  
+# Ensure MySQL service is started on RedHat-based systems
+- name: Start MySQL service on RedHat
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+

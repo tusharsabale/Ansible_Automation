@@ -1,0 +1,37 @@
+---
+# Install MySQL server on Debian-based systems
+- name: Install MySQL server on Debian
+  apt:
+    name: mysql-server
+    state: present
+  become: yes
+  when: ansible_os_family == "Debian"
+
+# Ensure MySQL service is started on Debian-based systems
+- name: Start MySQL service on Debian
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+  become: yes
+  when: ansible_os_family == "Debian"
+  
+
+
+# Install MySQL server on RedHat-based systems
+- name: Install MySQL server on RedHat
+  yum:
+    name: mysql-server
+    state: present
+  become: yes
+  
+# Ensure MySQL service is started on RedHat-based systems
+- name: Start MySQL service on RedHat
+  service:
+    name: mysqld
+    state: started
+    enabled: yes
+  become: yes
+  when: ansible_os_family == "RedHat"
+
+
