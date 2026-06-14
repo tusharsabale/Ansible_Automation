@@ -1,0 +1,6 @@
+---
+# defaults file for network_packages
+network_packages:
+  - telnet
+  - gcc
+  - bind-utils

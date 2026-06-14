@@ -1,0 +1,6 @@
+---
+- name: install for the rpm packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ network_packages }}"

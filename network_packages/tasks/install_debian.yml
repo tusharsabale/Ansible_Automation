@@ -1,0 +1,6 @@
+---
+- name: install for the debian packages
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ network_packages }}"
