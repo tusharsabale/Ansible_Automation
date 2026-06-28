@@ -18,18 +18,19 @@ pipeline {
         }
 
         stage('Validate Ansible Role') {
-            steps {
-                echo "Checking Ansible structure..."
-                sh '''
-                    test -d defaults
-                    test -d tasks
-                    test -d handlers
-                    test -d vars
-                    test -d meta
-                    echo "Ansible role structure is OK"
-                '''
-            }
-        }
+    steps {
+        echo "Checking Ansible structure..."
+
+        sh '''
+            test -d network_packages/defaults
+            test -d network_packages/tasks
+            test -d network_packages/handlers
+            test -d network_packages/vars
+            test -d network_packages/meta
+            echo "Ansible role structure is OK"
+        '''
+    }
+}
 
         stage('Dry Run (Optional)') {
             steps {
