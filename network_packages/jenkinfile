@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                echo "Cloning code from GitHub..."
+                checkout scm
+            }
+        }
+
+        stage('Show Project Structure') {
+            steps {
+                echo "Listing repository files..."
+                sh 'ls -R'
+            }
+        }
+
+        stage('Validate Ansible Role') {
+            steps {
+                echo "Checking Ansible structure..."
+                sh '''
+                    test -d defaults
+                    test -d tasks
+                    test -d handlers
+                    test -d vars
+                    test -d meta
+                    echo "Ansible role structure is OK"
+                '''
+            }
+        }
+
+        stage('Dry Run (Optional)') {
+            steps {
+                echo "This is a test pipeline (no deployment yet)"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline completed successfully"
+        }
+        failure {
+            echo "Pipeline failed"
+        }
+    }
+}
