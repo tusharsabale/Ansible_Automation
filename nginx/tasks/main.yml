@@ -1,27 +1,24 @@
-
-# tasks file for httpd
 ---
 - name: Install Apache httpd
   yum:
     name: httpd
     state: present
 
-- name: Start and enabled Apache service
-  service: httpd
-  state: started
-  enabled: yes
+- name: Start and enable Apache service
+  service:
+    name: httpd
+    state: started
+    enabled: yes
 
-- name: Ensure Firewall is Allowing http traffic
-  firewalld:
+- name: Ensure Firewall is allowing HTTP traffic
+  ansible.posix.firewalld:
     service: http
     permanent: yes
     state: enabled
     immediate: yes
 
-- name: Add Web content
+- name: Add web content
   template:
     src: index.html.j2
     dest: /var/www/html/index.html
   notify: Restart_httpd
-
-# tasks file for nginx

@@ -3,48 +3,59 @@ pipeline {
 
     stages {
 
+        stage('VM Information') {
+            steps {
+                sh '''
+                    echo "===== VM INFORMATION ====="
+                    echo "Hostname : $(hostname)"
+                    echo "User     : $(whoami)"
+                    echo "IP Addr  : $(hostname -I)"
+                    echo "Working Directory : $(pwd)"
+                    echo "=========================="
+                '''
+            }
+        }
+
         stage('Checkout') {
             steps {
-                echo "Cloning code from GitHub..."
                 checkout scm
             }
         }
 
-        stage('Show Project Structure') {
+        stage('Show Repository') {
             steps {
-                echo "Listing repository files..."
                 sh 'ls -R'
             }
         }
 
         stage('Validate Ansible Role') {
-    steps {
-        echo "Checking Ansible structure..."
-
-        sh '''
-            test -d nginx/defaults
-            test -d nginx/tasks
-            test -d nginx/handlers
-            test -d nginx/vars
-            test -d nginx/meta
-            echo "Ansible role structure is OK"
-        '''
-    }
-}
-
-        stage('Dry Run (Optional)') {
             steps {
-                echo "This is a test pipeline (no deployment yet)"
+                sh '''
+                    test -d nginx/defaults
+                    test -d nginx/tasks
+		    test -d nginx/tests
+                    test -d nginx/handlers
+                    test -d nginx/vars
+                    test -d nginx/meta
+
+                    echo "Ansible role structure is valid."
+                '''
+            }
+        }
+
+        stage('Check Ansible') {
+            steps {
+                sh 'ansible --version'
             }
         }
     }
 
     post {
         success {
-            echo "Pipeline completed successfully"
+            echo "Pipeline completed successfully."
         }
         failure {
-            echo "Pipeline failed"
+            echo "Pipeline failed."
         }
     }
 }
