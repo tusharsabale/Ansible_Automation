@@ -1,0 +1,27 @@
+
+# tasks file for httpd
+---
+- name: Install Apache httpd
+  yum:
+    name: httpd
+    state: present
+
+- name: Start and enabled Apache service
+  service: httpd
+  state: started
+  enabled: yes
+
+- name: Ensure Firewall is Allowing http traffic
+  firewalld:
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Add Web content
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify: Restart_httpd
+
+# tasks file for nginx
